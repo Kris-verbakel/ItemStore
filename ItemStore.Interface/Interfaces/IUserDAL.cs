@@ -10,6 +10,8 @@ namespace ItemStore.Interface.Interfaces
         bool ComparePasswords(string email, string password);
         UserDTO GetUserById(int id);
         UserDTO GetUserByUserName(string userName);
-        List<UserDTO> GetAllUsers(); 
+        List<UserDTO> GetAllUsers();
+        void CreateUser(string email, string userName, string firstName, string lastName, string password);
+        void UpdateProfile(int id, string email, string userName, string firstName, string lastName, string password);
     }
 }

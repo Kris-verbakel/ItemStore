@@ -13,6 +13,8 @@ using ItemStore.Logic.Interfaces;
 using ItemStore.Logic.Models.User;
 using ItemStore.Data;
 using ItemStore.Interface.Interfaces;
+using ItemStore.Logic.Models.Item;
+using ItemStore.Data.DAL;
 
 namespace ItemStore.Presentation
 {
@@ -36,9 +38,11 @@ namespace ItemStore.Presentation
 
             //register dependencies
             services.AddScoped<IUserContainer, UserContainer>();
-            services.AddScoped<IUserDAL, UserDAL>(); 
-           
-          
+            services.AddScoped<IUserDAL, UserDAL>();
+            services.AddScoped<IItemContainer, ItemContainer>();
+            services.AddScoped<IItemDAL, ItemDAL>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +62,9 @@ namespace ItemStore.Presentation
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            // Add authentication to request pipeline
+            app.UseAuthentication(); 
 
             app.UseAuthorization();
 

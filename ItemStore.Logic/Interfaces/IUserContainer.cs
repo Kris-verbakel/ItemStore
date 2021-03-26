@@ -6,10 +6,12 @@ namespace ItemStore.Logic.Interfaces
 {
     public interface IUserContainer
     {
-        public UserModel GetUserByEmail(string email);
-        public UserModel GetUserById(int id);
-        public bool ComparePasswords(string email, string password);
-        public UserModel GetUserByUserName(string userName);
-        public List<UserModel> GetAllUsers(); 
+        UserModel GetUserByEmail(string email);
+        UserModel GetUserById(int id);
+        bool ComparePasswords(string email, string password);
+        UserModel GetUserByUserName(string userName);
+        List<UserModel> GetAllUsers();
+        void CreateUser(string userName, string email, string password, string firstName, string lastName);
+        void UpdateProfile(int id, string email, string userName, string firstName, string lastName, string password);
     }
 }

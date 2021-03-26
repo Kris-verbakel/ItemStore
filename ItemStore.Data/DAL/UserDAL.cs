@@ -67,7 +67,7 @@ namespace ItemStore.Data
             }
         }
 
-        void CreateUser(string email, string userName, string firstName, string lastName, string password)
+        public void CreateUser(string email, string userName, string firstName, string lastName, string password)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
             {
@@ -75,7 +75,18 @@ namespace ItemStore.Data
                 var query = "INSERT INTO [dbo].[Customer] (UserName, Email, Password, LastName, FirstName) VALUES (@UserName, @Email, @Password, @LastName, @FirstName)";
 
                 connection.Query(query, parameters);
-            }
+            }   
+        }
+
+        public void UpdateProfile(int id, string email, string userName, string firstName, string lastName, string password)
+        {            
+            using (SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
+            {
+                var parameters = new { UserName = userName, EmailAdress = email, Id = id, LastName = lastName, FirstName = firstName };
+                var query = "UPDATE [dbo].[Customer] SET UserEmail = @EmailAdress, UserName = @UserName, LastName = @LastName, FirstName = @FirstName WHERE ID = @Id";
+
+                connection.Query(query, parameters);
+            }           
         }
     }
 }

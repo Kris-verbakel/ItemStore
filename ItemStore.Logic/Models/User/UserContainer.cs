@@ -49,5 +49,15 @@ namespace ItemStore.Logic.Models.User
             }
             return users;
         }
+
+        public void CreateUser(string userName, string email, string password, string firstName, string lastName)
+        {
+            _userDAL.CreateUser(email, userName, firstName, lastName, password); 
+        }
+
+        public void UpdateProfile(int id,string userName, string email, string password, string firstName, string lastName)
+        {
+            _userDAL.UpdateProfile(id, email, userName, firstName, lastName, password); 
+        }
     }
 }
