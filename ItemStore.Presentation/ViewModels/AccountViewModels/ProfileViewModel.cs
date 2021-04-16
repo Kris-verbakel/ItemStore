@@ -8,7 +8,6 @@ namespace ItemStore.Presentation.ViewModels.AccountViewModels
 {
     public class ProfileViewModel
     {
-
         [Required]
         [Display(Name = "Username")]
         public string Username { get; set; }

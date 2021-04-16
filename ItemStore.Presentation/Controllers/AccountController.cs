@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using ItemStore.Logic.Interfaces;
+using ItemStore.Logic.Salt;
 using ItemStore.Presentation.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -15,10 +17,12 @@ namespace ItemStore.Presentation.Controllers
     public class AccountController : Controller
     {
         private readonly IUserContainer _userContainer;
+        private static string _salt; 
 
-        public AccountController(IUserContainer userContainer)
+        public AccountController(IUserContainer userContainer, PasswordSalt passSalt)
         {
-            _userContainer = userContainer; 
+            _userContainer = userContainer;
+            _salt = passSalt.Salt; 
         }
 
         public IActionResult Index()
@@ -45,13 +49,14 @@ namespace ItemStore.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_userContainer.ComparePasswords(model.EmailAddress, model.Password))
-                {
-                    var user = _userContainer.GetUserByEmail(model.EmailAddress);
+                var User = _userContainer.GetUserByEmail(model.EmailAddress);
 
+                if (Crypto.VerifyHashedPassword(User.Password, model.Password + _salt))
+                {
+                    model.Password = null; 
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                    identity.AddClaim(new Claim(ClaimTypes.Name, user.Email));
-                    identity.AddClaim(new Claim(ClaimTypes.GivenName, user.UserName));
+                    identity.AddClaim(new Claim(ClaimTypes.Name, User.Email));
+                    identity.AddClaim(new Claim(ClaimTypes.GivenName, User.UserName));
 
                     var principal = new ClaimsPrincipal(identity);
 
@@ -80,7 +85,10 @@ namespace ItemStore.Presentation.Controllers
         {
             if(ModelState.IsValid)
             {
-                _userContainer.CreateUser(model.UserName, model.EmailAddress, model.Password, model.FirstName, model.LastName);
+                var hash = Crypto.HashPassword(model.Password + _salt);    // Hash and Salt the password
+                model.Password = hash;
+
+                _userContainer.CreateUser(model.UserName, model.EmailAddress, model.Password, model.FirstName, model.LastName, 0);
                 return RedirectToAction("Login","Account"); 
             }
             

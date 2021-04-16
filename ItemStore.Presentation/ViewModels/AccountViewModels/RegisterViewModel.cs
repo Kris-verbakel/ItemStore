@@ -11,9 +11,11 @@ namespace ItemStore.Presentation.ViewModels.AccountViewModels
         [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email address")]
+        [StringLength(50, ErrorMessage = "The email adress can not be longer than 50 characters")]
         public string EmailAddress { get; set; }
         [Required]
         [Display(Name = "Username")]
+        [StringLength(15, ErrorMessage = "The username can not be longer than 15 characters")]
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.Password)]

@@ -8,10 +8,9 @@ namespace ItemStore.Logic.Interfaces
     {
         UserModel GetUserByEmail(string email);
         UserModel GetUserById(int id);
-        bool ComparePasswords(string email, string password);
         UserModel GetUserByUserName(string userName);
         List<UserModel> GetAllUsers();
-        void CreateUser(string userName, string email, string password, string firstName, string lastName);
+        void CreateUser(string userName, string email, string password, string firstName, string lastName, int role);
         void UpdateProfile(int id, string email, string userName, string firstName, string lastName, string password);
     }
 }

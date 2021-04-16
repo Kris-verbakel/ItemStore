@@ -27,11 +27,6 @@ namespace ItemStore.Logic.Models.User
             return new UserModel(userDTO); 
         }
 
-        public bool ComparePasswords(string email, string password)
-        {
-           return _userDAL.ComparePasswords(email, password); 
-        }
-
         public UserModel GetUserByUserName(string userName)
         {
             var userDTO = _userDAL.GetUserByUserName(userName);
@@ -50,9 +45,9 @@ namespace ItemStore.Logic.Models.User
             return users;
         }
 
-        public void CreateUser(string userName, string email, string password, string firstName, string lastName)
+        public void CreateUser(string userName, string email, string password, string firstName, string lastName, int role)
         {
-            _userDAL.CreateUser(email, userName, firstName, lastName, password); 
+            _userDAL.CreateUser(email, userName, firstName, lastName, password, role); 
         }
 
         public void UpdateProfile(int id,string userName, string email, string password, string firstName, string lastName)

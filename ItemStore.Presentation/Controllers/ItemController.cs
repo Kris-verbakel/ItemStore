@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ItemStore.Logic.Interfaces;
 using ItemStore.Logic.Models.Item;
 using ItemStore.Presentation.ViewModels.ItemViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItemStore.Presentation.Controllers
@@ -44,7 +45,7 @@ namespace ItemStore.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateItem(ItemViewModel model)
+        public IActionResult CreateItem(CreateItemViewModel model)
         {
             if(ModelState.IsValid)
             {
@@ -52,6 +53,13 @@ namespace ItemStore.Presentation.Controllers
                 return RedirectToAction("Item, ListItems"); 
             }
             return View(model); 
+        }
+
+        [HttpGet]
+        public IActionResult Item(int id)
+        {
+            var item = _itemContainer.GetItemById(id);
+            return View(item);  
         }
     }
 }

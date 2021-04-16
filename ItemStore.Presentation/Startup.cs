@@ -15,6 +15,9 @@ using ItemStore.Data;
 using ItemStore.Interface.Interfaces;
 using ItemStore.Logic.Models.Item;
 using ItemStore.Data.DAL;
+using ItemStore.Logic.Salt;
+using Microsoft.Extensions.Options;
+using ItemStore.Data.SqlDbAcces;
 
 namespace ItemStore.Presentation
 {
@@ -42,6 +45,21 @@ namespace ItemStore.Presentation
             services.AddScoped<IItemContainer, ItemContainer>();
             services.AddScoped<IItemDAL, ItemDAL>();
 
+            // Set the Salt for password hashing
+            Action<PasswordSalt> passwordSalt = (opt =>
+            {
+                opt.Salt = "$%19#";
+            });
+            services.Configure(passwordSalt);
+            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<PasswordSalt>>().Value);
+
+            Action<ConnectionString> connectionString = (opt =>
+            {
+                opt.connectionString = "Data Source=LAPTOP-M87NBEN5;Initial Catalog=AppDB;Integrated Security=True";
+            });
+
+            services.Configure(connectionString);
+            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<ConnectionString>>().Value);
 
         }
 

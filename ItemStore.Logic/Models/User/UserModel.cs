@@ -11,6 +11,7 @@ namespace ItemStore.Logic
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Password { get; set; }
+        public int Role { get; set; }
 
         public UserModel(UserDTO userDTO)
         {
@@ -20,6 +21,7 @@ namespace ItemStore.Logic
             this.FirstName = userDTO.FirstName;
             this.LastName = userDTO.LastName;
             this.Password = userDTO.Password;
+            this.Role = userDTO.Role; 
         }
     }
 }

@@ -11,9 +11,14 @@ namespace ItemStore.Data
 {
     public class UserDAL : IUserDAL
     {
+        private string connectionString; 
+        public UserDAL(ConnectionString connection)
+        {
+            connectionString = connection.connectionString; 
+        }
         public UserDTO GetUserByEmail(string emailAdress)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var parameters = new { EmailAdress = emailAdress };
                 var query = "SELECT * FROM [dbo].[Customer] WHERE Email = @EmailAdress";
@@ -22,22 +27,9 @@ namespace ItemStore.Data
             }
         }
 
-        public bool ComparePasswords(string emailAdress, string password)
-        {
-            using(SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
-            {
-                var parameters = new { EmailAdress = emailAdress, Password = password };
-                var query = "SELECT COUNT(1) FROM [dbo].[Customer] WHERE Email = @EmailAdress AND Password = @Password";
-
-                bool isTheSame = connection.ExecuteScalar<bool>(query, parameters);
-
-                return isTheSame; 
-            }
-        }
-
         public UserDTO GetUserById(int id)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var parameters = new { Id = id };
                 var query = "SELECT COUNT(1) WHERE ID = @Id";
@@ -48,7 +40,7 @@ namespace ItemStore.Data
 
         public UserDTO GetUserByUserName(string userName)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var parameters = new { UserName = userName };
                 var query = "SELECT COUNT(1) WHERE UserName = @UserName";
@@ -59,7 +51,7 @@ namespace ItemStore.Data
 
         public List<UserDTO> GetAllUsers()
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var query = "SElECT UserName FROM [dbo].[Customer]";
 
@@ -67,20 +59,20 @@ namespace ItemStore.Data
             }
         }
 
-        public void CreateUser(string email, string userName, string firstName, string lastName, string password)
+        public void CreateUser(string email, string userName, string firstName, string lastName, string password, int role)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var parameters = new { UserName = userName, Email = email, Password = password, LastName = lastName, FirstName = firstName };
-                var query = "INSERT INTO [dbo].[Customer] (UserName, Email, Password, LastName, FirstName) VALUES (@UserName, @Email, @Password, @LastName, @FirstName)";
+                var parameters = new { UserName = userName, Email = email, Password = password, LastName = lastName, FirstName = firstName, Role = role };
+                var query = "INSERT INTO [dbo].[Customer] (UserName, Email, Password, LastName, FirstName, Role) VALUES (@UserName, @Email, @Password, @LastName, @FirstName, @Role)";
 
                 connection.Query(query, parameters);
             }   
         }
 
         public void UpdateProfile(int id, string email, string userName, string firstName, string lastName, string password)
-        {            
-            using (SqlConnection connection = new SqlConnection(ConnectionString.GetConnectionString()))
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var parameters = new { UserName = userName, EmailAdress = email, Id = id, LastName = lastName, FirstName = firstName };
                 var query = "UPDATE [dbo].[Customer] SET UserEmail = @EmailAdress, UserName = @UserName, LastName = @LastName, FirstName = @FirstName WHERE ID = @Id";

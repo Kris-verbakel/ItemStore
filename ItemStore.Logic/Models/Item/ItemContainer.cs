@@ -26,6 +26,12 @@ namespace ItemStore.Logic.Models.Item
             return items;
         }
 
+        public ItemModel GetItemById(int ID)
+        {
+            var item = _itemDAL.GetItemById(ID);
+            return new ItemModel(item); 
+        }
+
         public void CreateItem(string name, string brand, double price, string image, string description)
         {
             _itemDAL.CreateItem(name, brand, price, image, description); 

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ItemStore.Presentation.ViewModels.ItemViewModels.ItemViewModel>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ListItemView</title>
+</head>
+<body>
+    <p>
+        <a asp-action="CreateItem">Create New</a>
+    </p>
+
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                <img class="card-img-top" src=@item.Image alt="">
+                <div class="card-body">
+                    <h3 class="card-title "> @item.Brand</h3>
+                    <h4>@item.Name</h4>
+                    <h5>€@item.Price</h5>
+                    <p class="card-text">@item.Description</p>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-primary"asp-controller="Item" asp-action="Item" asp-route-id="@item.ID">Details</button>
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>

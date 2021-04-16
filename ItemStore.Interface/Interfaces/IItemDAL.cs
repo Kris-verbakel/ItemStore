@@ -11,5 +11,6 @@ namespace ItemStore.Interface.Interfaces
         void CreateItem(string name, string brand, double price, string image, string description);
         void DeleteItem(int ID); 
         void UpdateItem(int ID, string name, string brand, double price, string image, string description);
+        ItemDTO GetItemById(int ID); 
     }
 }
