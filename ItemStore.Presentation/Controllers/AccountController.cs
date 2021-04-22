@@ -55,8 +55,9 @@ namespace ItemStore.Presentation.Controllers
                 {
                     model.Password = null; 
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                    identity.AddClaim(new Claim(ClaimTypes.Name, User.Email));
                     identity.AddClaim(new Claim(ClaimTypes.GivenName, User.UserName));
+                    identity.AddClaim(new Claim(ClaimTypes.Name, User.FirstName + " " + User.LastName));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, User.Email)); 
 
                     var principal = new ClaimsPrincipal(identity);
 

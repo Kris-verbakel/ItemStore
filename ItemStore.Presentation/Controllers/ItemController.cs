@@ -59,7 +59,9 @@ namespace ItemStore.Presentation.Controllers
         public IActionResult Item(int id)
         {
             var item = _itemContainer.GetItemById(id);
-            return View(item);  
+
+            ItemViewModel model = new ItemViewModel(item); 
+            return View(model);  
         }
     }
 }
