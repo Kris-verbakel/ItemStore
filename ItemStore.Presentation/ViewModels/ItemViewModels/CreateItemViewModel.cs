@@ -17,6 +17,7 @@ namespace ItemStore.Presentation.ViewModels.ItemViewModels
         [Required]
         [Display(Name = "Price")]
         public double Price { get; set; }
+        [Required]
         [Display(Name = "Image URL")]
         [DataType(DataType.ImageUrl)]
         public string Image { get; set; }

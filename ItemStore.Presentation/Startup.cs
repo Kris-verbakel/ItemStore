@@ -81,7 +81,7 @@ namespace ItemStore.Presentation
 
             app.UseRouting();
 
-            // Add authentication to request pipeline
+            // Add authentication 
             app.UseAuthentication(); 
 
             app.UseAuthorization();

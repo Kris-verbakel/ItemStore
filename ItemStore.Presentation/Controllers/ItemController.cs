@@ -50,7 +50,7 @@ namespace ItemStore.Presentation.Controllers
             if(ModelState.IsValid)
             {
                 _itemContainer.CreateItem(model.Name, model.Brand, model.Price, model.Image, model.Description);
-                return RedirectToAction("Item, ListItems"); 
+                return RedirectToAction("ListItems" , "Item"); 
             }
             return View(model); 
         }
@@ -62,6 +62,32 @@ namespace ItemStore.Presentation.Controllers
 
             ItemViewModel model = new ItemViewModel(item); 
             return View(model);  
+        }
+
+        public IActionResult DeleteItem(int id)
+        {
+            _itemContainer.DeleteItem(id);
+            return RedirectToAction("ListItems" , "Item"); 
+        }
+
+        [HttpGet]
+        public IActionResult EditItem(int id)
+        {
+            var item = _itemContainer.GetItemById(id);
+
+            return View(new ItemViewModel(item));
+        }
+
+        [HttpPost]
+        public IActionResult EditItem()
+        {
+            if(ModelState.IsValid)
+            {
+                //var item = _itemContainer.GetItemById(id); 
+                //_itemContainer.UpdateItem(item.ID, item.Name, item.Brand, item.Price, item.Image, item.Description); 
+
+            }
+            return View(); 
         }
     }
 }

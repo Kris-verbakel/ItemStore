@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemStore.Presentation", "ItemStore.Presentation\ItemStore.Presentation.csproj", "{209793BB-4956-4CC6-AE5C-0E717670CB84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemStore.Presentation", "ItemStore.Presentation\ItemStore.Presentation.csproj", "{209793BB-4956-4CC6-AE5C-0E717670CB84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemStore.Data", "ItemStore.Data\ItemStore.Data.csproj", "{0C52764B-95C6-4AEC-96EE-7AAC46CA409D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemStore.Data", "ItemStore.Data\ItemStore.Data.csproj", "{0C52764B-95C6-4AEC-96EE-7AAC46CA409D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemStore.Logic", "ItemStore.Logic\ItemStore.Logic.csproj", "{EEB73182-E9AD-426C-9ED3-BC21906D7E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemStore.Logic", "ItemStore.Logic\ItemStore.Logic.csproj", "{EEB73182-E9AD-426C-9ED3-BC21906D7E03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemStore.Interface", "ItemStore.Interface\ItemStore.Interface.csproj", "{E2D1A9A3-97ED-41E9-821C-DE429B0E5A43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemStore.Interface", "ItemStore.Interface\ItemStore.Interface.csproj", "{E2D1A9A3-97ED-41E9-821C-DE429B0E5A43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemStore.Test", "ItemStore.Test\ItemStore.Test.csproj", "{F03728EA-DF43-4DD9-9F68-6B78F3145AB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E2D1A9A3-97ED-41E9-821C-DE429B0E5A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2D1A9A3-97ED-41E9-821C-DE429B0E5A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2D1A9A3-97ED-41E9-821C-DE429B0E5A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F03728EA-DF43-4DD9-9F68-6B78F3145AB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F03728EA-DF43-4DD9-9F68-6B78F3145AB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F03728EA-DF43-4DD9-9F68-6B78F3145AB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F03728EA-DF43-4DD9-9F68-6B78F3145AB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

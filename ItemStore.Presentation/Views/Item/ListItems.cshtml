@@ -9,14 +9,22 @@
 </head>
 <body>
     <p>
-        <a asp-action="CreateItem">Create New</a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-action="CreateItem">Create New</a>
+        }
+        else
+            {
+                <a asp-controller="Account" asp-action="Login">Log in to add an item</a>
+            }
+
     </p>
 
     @foreach (var item in Model)
     {
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-                <img class="card-img-top" src=@item.Image alt="">
+                <img class="card-img-top" src=@item.Image alt="ProductImage">
                 <div class="card-body">
                     <h3 class="card-title "> @item.Brand</h3>
                     <h4>@item.Name</h4>
@@ -25,6 +33,7 @@
                 </div>
                 <div class="card-footer">
                     <a asp-controller="Item" asp-action="Item" asp-route-id="@item.ID">Details</a>
+                    <a asp-controller="Item" asp-action="DeleteItem" asp-route-id="@item.ID">Delete</a>
                 </div>
             </div>
         </div>
