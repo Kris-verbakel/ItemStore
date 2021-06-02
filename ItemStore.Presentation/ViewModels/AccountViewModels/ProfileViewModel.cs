@@ -24,5 +24,17 @@ namespace ItemStore.Presentation.ViewModels.AccountViewModels
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
+        [Display(Name = "Adress")]
+        public string Adress { get; set; }
+        [Required]
+        [Display(Name = "City")]
+        public string City { get; set; }
+        [Required]
+        [Display(Name = "Country")]
+        public string Country { get; set; }
+        [Required]
+        [Display(Name = "Postal code")]
+        public string PostalCode { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace ItemStore.Presentation.ViewModels.ItemViewModels
         [Required]
         [Display(Name = "Description")   ]
         public string Description { get; set; }
+        public int UserID { get; set; }
 
         public ItemViewModel(ItemModel itemModel)
         {
@@ -33,7 +34,13 @@ namespace ItemStore.Presentation.ViewModels.ItemViewModels
             this.Brand = itemModel.Brand;
             this.Image = itemModel.Image;
             this.Description = itemModel.Description;
-            this.Price = itemModel.Price; 
+            this.Price = itemModel.Price;
+            this.UserID = itemModel.UserID; 
+        }
+
+        public ItemViewModel()
+        {
+
         }
     }
 }

@@ -18,6 +18,7 @@ using ItemStore.Data.DAL;
 using ItemStore.Logic.Salt;
 using Microsoft.Extensions.Options;
 using ItemStore.Data.SqlDbAcces;
+using ItemStore.Logic;
 
 namespace ItemStore.Presentation
 {
@@ -41,9 +42,16 @@ namespace ItemStore.Presentation
 
             //register dependencies
             services.AddScoped<IUserContainer, UserContainer>();
-            services.AddScoped<IUserDAL, UserDAL>();
+            services.AddScoped<IUserContainerDAL, UserDAL>();
+
+            services.AddScoped<IUserModelDAL, UserDAL>();
+            services.AddScoped<IUserModel, UserModel>();
+
             services.AddScoped<IItemContainer, ItemContainer>();
-            services.AddScoped<IItemDAL, ItemDAL>();
+            services.AddScoped<IItemContainerDAL, ItemDAL>();
+
+            services.AddScoped<IItemModelDAL, ItemDAL>();
+            services.AddScoped<IItemModel, ItemModel>();
 
             // Set the Salt for password hashing
             Action<PasswordSalt> passwordSalt = (opt =>

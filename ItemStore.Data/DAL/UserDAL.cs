@@ -2,14 +2,13 @@
 using ItemStore.Data.SqlDbAcces;
 using ItemStore.Interface;
 using ItemStore.Interface.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
 namespace ItemStore.Data
 {
-    public class UserDAL : IUserDAL
+    public class UserDAL : IUserContainerDAL, IUserModelDAL
     {
         private string connectionString; 
         public UserDAL(ConnectionString connection)
@@ -43,7 +42,7 @@ namespace ItemStore.Data
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var parameters = new { UserName = userName };
-                var query = "SELECT COUNT(1) WHERE UserName = @UserName";
+                var query = "SELECT COUNT(1) FROM [dbo].[Customer] WHERE UserName = @UserName";
 
                 return connection.Query<UserDTO>(query, parameters).FirstOrDefault(); 
             }
@@ -59,23 +58,23 @@ namespace ItemStore.Data
             }
         }
 
-        public void CreateUser(string email, string userName, string firstName, string lastName, string password, int role)
+        public void CreateUser(UserDTO newAcc)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var parameters = new { UserName = userName, Email = email, Password = password, LastName = lastName, FirstName = firstName, Role = role };
-                var query = "INSERT INTO [dbo].[Customer] (UserName, Email, Password, LastName, FirstName, Role) VALUES (@UserName, @Email, @Password, @LastName, @FirstName, @Role)";
+                var parameters = new { UserName = newAcc.UserName, Email = newAcc.Email, Password = newAcc.Password, LastName = newAcc.LastName, FirstName = newAcc.FirstName, Adress = newAcc.Adress, City = newAcc.City, Country = newAcc.Country, PostalCode = newAcc.PostalCode };
+                var query = "INSERT INTO [dbo].[Customer] (UserName, Email, Password, LastName, FirstName, Adress, City, Country, PostalCode) VALUES (@UserName, @Email, @Password, @LastName, @FirstName, @Adress, @City, @Country, @PostalCode)";
 
                 connection.Query(query, parameters);
             }   
         }
 
-        public void UpdateProfile(int id, string email, string userName, string firstName, string lastName, string password)
+        public void UpdateProfile(int id, UserDTO userAcc)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                var parameters = new { UserName = userName, EmailAdress = email, Id = id, LastName = lastName, FirstName = firstName };
-                var query = "UPDATE [dbo].[Customer] SET UserEmail = @EmailAdress, UserName = @UserName, LastName = @LastName, FirstName = @FirstName WHERE ID = @Id";
+                var parameters = new { UserName = userAcc.UserName, EmailAdress = userAcc.Email, Id = id, LastName = userAcc.LastName, FirstName = userAcc.FirstName, Adress = userAcc.Adress, City = userAcc.City, Country = userAcc.Country, PostalCode = userAcc.PostalCode };
+                var query = "UPDATE [dbo].[Customer] SET UserEmail = @EmailAdress, UserName = @UserName, LastName = @LastName, FirstName = @FirstName, Adress = @Adress, City = @City, Country = @Country, PostalCode = @PostalCode WHERE ID = @Id";
 
                 connection.Query(query, parameters);
             }           

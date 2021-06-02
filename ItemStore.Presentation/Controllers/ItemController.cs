@@ -13,10 +13,14 @@ namespace ItemStore.Presentation.Controllers
     public class ItemController : Controller
     {
         private readonly IItemContainer _itemContainer;
+        private readonly IItemModel _itemModel;
+        private readonly IUserContainer _userContainer; 
         
-        public ItemController(IItemContainer itemContainer)
+        public ItemController(IItemContainer itemContainer, IUserContainer userContainer, IItemModel itemModel)
         {
-            _itemContainer = itemContainer; 
+            _itemContainer = itemContainer;
+            _userContainer = userContainer;
+            _itemModel = itemModel; 
         }
 
         public IActionResult Index()
@@ -49,7 +53,18 @@ namespace ItemStore.Presentation.Controllers
         {
             if(ModelState.IsValid)
             {
-                _itemContainer.CreateItem(model.Name, model.Brand, model.Price, model.Image, model.Description);
+                var user = _userContainer.GetUserByUserName(User.Identity.Name);
+
+                ItemModel itemModel = new ItemModel
+                {
+                    Brand = model.Brand, 
+                    Name = model.Name,
+                    Description = model.Description, 
+                    Image = model.Image, 
+                    Price = model.Price
+                };
+
+                _itemContainer.CreateItem(itemModel, user.ID);
                 return RedirectToAction("ListItems" , "Item"); 
             }
             return View(model); 
@@ -79,15 +94,22 @@ namespace ItemStore.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditItem()
+        public IActionResult EditItem(ItemViewModel model)
         {
-            if(ModelState.IsValid)
+            ItemModel itemModel = new ItemModel
             {
-                //var item = _itemContainer.GetItemById(id); 
-                //_itemContainer.UpdateItem(item.ID, item.Name, item.Brand, item.Price, item.Image, item.Description); 
+                Brand = model.Brand,
+                Name = model.Name,
+                Description = model.Description,
+                Image = model.Image,
+                Price = model.Price
+            };
 
+            if (ModelState.IsValid)
+            {
+                _itemModel.UpdateItem(model.ID, itemModel); 
             }
-            return View(); 
+            return View(model); 
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ItemStore.Interface.Interfaces;
+﻿using ItemStore.Interface.DTO;
+using ItemStore.Interface.Interfaces;
 using ItemStore.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,15 @@ namespace ItemStore.Logic.Models.Item
 {
     public class ItemContainer : IItemContainer 
     {
-        private readonly IItemDAL _itemDAL;
+        private readonly IItemContainerDAL _itemContainerDAL;
 
-        public ItemContainer(IItemDAL itemDAL)
+        public ItemContainer(IItemContainerDAL itemDAL)
         {
-            _itemDAL = itemDAL; 
+            _itemContainerDAL = itemDAL; 
         }
         public List<ItemModel> GetAllItems()
         {
-            var itemDTOs = _itemDAL.GetAllItems();
+            var itemDTOs = _itemContainerDAL.GetAllItems();
             var items = new List<ItemModel>();
 
             foreach (var itemDTO in itemDTOs)
@@ -28,21 +29,26 @@ namespace ItemStore.Logic.Models.Item
 
         public ItemModel GetItemById(int ID)
         {
-            var item = _itemDAL.GetItemById(ID);
+            var item = _itemContainerDAL.GetItemById(ID);
             return new ItemModel(item); 
         }
 
-        public void CreateItem(string name, string brand, double price, string image, string description)
+        public void CreateItem(ItemModel item, int userID)
         {
-            _itemDAL.CreateItem(name, brand, price, image, description); 
+            ItemDTO itemDTO = new ItemDTO
+            {
+                Brand = item.Brand,
+                Name = item.Name,
+                Description = item.Description,
+                Image = item.Image,
+                Price = item.Price
+            };
+
+            _itemContainerDAL.CreateItem(itemDTO, userID); 
         }
         public void DeleteItem(int ID)
         {
-            _itemDAL.DeleteItem(ID); 
-        }
-        public void UpdateItem(int ID, string name, string brand, double price, string image, string description)
-        {
-            _itemDAL.UpdateItem(ID, name, brand, price, image, description); 
+            _itemContainerDAL.DeleteItem(ID); 
         }
     }
 }

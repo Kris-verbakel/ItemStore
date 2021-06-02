@@ -1,4 +1,5 @@
-﻿using ItemStore.Interface.Interfaces;
+﻿using ItemStore.Interface;
+using ItemStore.Interface.Interfaces;
 using ItemStore.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ namespace ItemStore.Logic.Models.User
 {
     public class UserContainer : IUserContainer
     {
-        private readonly IUserDAL _userDAL;
+        private readonly IUserContainerDAL _userDAL;
 
-        public UserContainer(IUserDAL userDAL)
+        public UserContainer(IUserContainerDAL userDAL)
         {
             _userDAL = userDAL; 
         }
@@ -45,14 +46,21 @@ namespace ItemStore.Logic.Models.User
             return users;
         }
 
-        public void CreateUser(string userName, string email, string password, string firstName, string lastName, int role)
+        public void CreateUser(UserModel user)
         {
-            _userDAL.CreateUser(email, userName, firstName, lastName, password, role); 
-        }
-
-        public void UpdateProfile(int id,string userName, string email, string password, string firstName, string lastName)
-        {
-            _userDAL.UpdateProfile(id, email, userName, firstName, lastName, password); 
+            UserDTO newAccountDTO = new UserDTO
+            {
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Password = user.Password,
+                Email = user.Email, 
+                City = user.City, 
+                Country = user.Country, 
+                Adress = user.Adress, 
+                PostalCode = user.PostalCode
+            };
+            _userDAL.CreateUser(newAccountDTO); 
         }
     }
 }

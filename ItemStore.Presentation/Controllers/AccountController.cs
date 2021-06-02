@@ -11,17 +11,21 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using ItemStore.Logic;
 
 namespace ItemStore.Presentation.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IUserContainer _userContainer;
+        private readonly IUserModel _userModel; 
         private static string _salt; 
 
-        public AccountController(IUserContainer userContainer, PasswordSalt passSalt)
+        public AccountController(IUserContainer userContainer, IUserModel userModel, PasswordSalt passSalt)
         {
             _userContainer = userContainer;
+            _userModel = userModel; 
             _salt = passSalt.Salt; 
         }
 
@@ -56,8 +60,9 @@ namespace ItemStore.Presentation.Controllers
                     model.Password = null; 
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                     identity.AddClaim(new Claim(ClaimTypes.GivenName, User.UserName));
-                    identity.AddClaim(new Claim(ClaimTypes.Name, User.FirstName + " " + User.LastName));
-                    identity.AddClaim(new Claim(ClaimTypes.Email, User.Email)); 
+                    //identity.AddClaim(new Claim(ClaimTypes.Name, User.FirstName + " " + User.LastName));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, User.Email));
+                    identity.AddClaim(new Claim(ClaimTypes.Name, User.UserName)); 
 
                     var principal = new ClaimsPrincipal(identity);
 
@@ -89,7 +94,20 @@ namespace ItemStore.Presentation.Controllers
                 var hash = Crypto.HashPassword(model.Password + _salt);    // Hash and Salt the password
                 model.Password = hash;
 
-                _userContainer.CreateUser(model.UserName, model.EmailAddress, model.Password, model.FirstName, model.LastName, 0);
+                UserModel userModel = new UserModel
+                {
+                    UserName = model.UserName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Password = model.Password,
+                    Email = model.EmailAddress,
+                    City = model.City,
+                    Country = model.Country,
+                    Adress = model.Adress,
+                    PostalCode = model.PostalCode
+                };
+
+                _userContainer.CreateUser(userModel);
                 return RedirectToAction("Login","Account"); 
             }
             
@@ -100,9 +118,10 @@ namespace ItemStore.Presentation.Controllers
         [HttpGet]
         public IActionResult Profile()
         {
-            var user = _userContainer.GetUserByEmail(User.Identity.Name);
+            var user = _userContainer.GetUserByUserName(User.Identity.Name);
 
-            return View(new ProfileViewModel() { EmailAddress = user.Email, Username = user.UserName, FirstName  = user.FirstName, LastName = user.LastName, Password = user.Password });
+            return View(new ProfileViewModel() { EmailAddress = user.Email, Username = user.UserName, FirstName  = user.FirstName, LastName = user.LastName, Password = user.Password, City = user.City,Country = user.Country, Adress = user.Adress, PostalCode = user.PostalCode
+            });
         }
 
         //POST:Account/Profile
@@ -111,13 +130,27 @@ namespace ItemStore.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _userContainer.GetUserByEmail(User.Identity.Name);
+                var user = _userContainer.GetUserByUserName(User.Identity.Name);
+                
+                UserModel userModel = new UserModel
+                {
+                    UserName = model.Username,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Password = model.Password,
+                    Email = model.EmailAddress,
+                    City = model.City,
+                    Country = model.Country,
+                    Adress = model.Adress,
+                    PostalCode = model.PostalCode
+                };
 
-                _userContainer.UpdateProfile(user.ID, model.EmailAddress, model.Username, model.FirstName, model.LastName, model.Password);
+                _userModel.UpdateProfile(user.ID, userModel);
 
                 return View();
             }
-            return View(model);
+            ModelState.AddModelError(string.Empty, "Invalid Update");
+            return View();
         }
 
         public async Task<IActionResult> Logout()
