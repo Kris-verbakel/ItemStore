@@ -1,11 +1,5 @@
 ﻿@model IEnumerable<ItemStore.Presentation.ViewModels.ItemViewModels.ItemViewModel>
 
-@using ItemStore.Logic.Models.User;
-@using ItemStore.Logic.Interfaces; 
-@{
-    IUserContainer _userContainer;
-    var user = _userContainer.GetUserByUserName(User.Identity.Name); 
- }
 <!DOCTYPE html>
 
 <html>
@@ -39,7 +33,7 @@
                 </div>
                 <div class="card-footer">
                     <a asp-controller="Item" asp-action="Item" asp-route-id="@item.ID">Details</a>
-                    @if (item.UserID == user.ID)
+                    @if (item.UserID == (int)TempData["userID"])
                     {
                         <a asp-controller="Item" asp-action="DeleteItem" asp-route-id="@item.ID">Delete</a>
                     }

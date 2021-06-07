@@ -45,6 +45,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action ="EditItem" asp-route-id = "@item.ID" >Edit</a> |
+    @if (item.UserID == (int)TempData["userID"])
+    {
+        <a asp-action="EditItem" asp-route-id="@item.ID">Edit</a> 
+}
     <a asp-action="ListItems">Back to List</a>
 </div>

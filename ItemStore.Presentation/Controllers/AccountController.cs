@@ -53,7 +53,7 @@ namespace ItemStore.Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                var User = _userContainer.GetUserByEmail(model.EmailAddress);
+                var User = _userContainer.GetUserByEmail(model.EmailAddress); 
 
                 if (Crypto.VerifyHashedPassword(User.Password, model.Password + _salt))
                 {

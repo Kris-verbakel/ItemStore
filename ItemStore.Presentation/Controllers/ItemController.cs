@@ -32,13 +32,15 @@ namespace ItemStore.Presentation.Controllers
         public IActionResult ListItems()
         {
             var allItems = _itemContainer.GetAllItems();
-            var items = new List<ItemViewModel>(); 
+            var items = new List<ItemViewModel>();
+            var user = _userContainer.GetUserByUserName(User.Identity.Name);
+            TempData["userID"] = user.ID;
 
-            foreach(var item in allItems)
+            foreach (var item in allItems)
             {
                 var model = new ItemViewModel(item); 
                 items.Add(model); 
-            }
+            }            
             return View(items);             
         }
 
@@ -74,6 +76,8 @@ namespace ItemStore.Presentation.Controllers
         public IActionResult Item(int id)
         {
             var item = _itemContainer.GetItemById(id);
+            var user = _userContainer.GetUserByUserName(User.Identity.Name);
+            TempData["userID"] = user.ID; 
 
             ItemViewModel model = new ItemViewModel(item); 
             return View(model);  

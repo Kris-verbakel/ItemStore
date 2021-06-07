@@ -42,9 +42,9 @@ namespace ItemStore.Data
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var parameters = new { UserName = userName };
-                var query = "SELECT COUNT(1) FROM [dbo].[Customer] WHERE UserName = @UserName";
-
-                return connection.Query<UserDTO>(query, parameters).FirstOrDefault(); 
+                var query = "SELECT * FROM [dbo].[Customer] WHERE UserName = @UserName";
+                var userDTO = connection.Query<UserDTO>(query, parameters).FirstOrDefault();
+                return userDTO;
             }
         }
 
@@ -74,7 +74,7 @@ namespace ItemStore.Data
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var parameters = new { UserName = userAcc.UserName, EmailAdress = userAcc.Email, Id = id, LastName = userAcc.LastName, FirstName = userAcc.FirstName, Adress = userAcc.Adress, City = userAcc.City, Country = userAcc.Country, PostalCode = userAcc.PostalCode };
-                var query = "UPDATE [dbo].[Customer] SET UserEmail = @EmailAdress, UserName = @UserName, LastName = @LastName, FirstName = @FirstName, Adress = @Adress, City = @City, Country = @Country, PostalCode = @PostalCode WHERE ID = @Id";
+                var query = "UPDATE [dbo].[Customer] SET Email = @EmailAdress, UserName = @UserName, LastName = @LastName, FirstName = @FirstName, Adress = @Adress, City = @City, Country = @Country, PostalCode = @PostalCode WHERE ID = @Id";
 
                 connection.Query(query, parameters);
             }           
